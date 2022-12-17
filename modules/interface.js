@@ -1,8 +1,23 @@
 /*
-Written by Alp Yakici and Andrew Obler for Rice Eclipse
+  slonkboard, a frontend dashboard for rocket controllers.
+  Copyright (C) 2022 Rice Eclipse.
 
-Creates a class for TCP protocol, which is used to send commands to the engine controller.
-Engine does not send any data using TCP protocol; therefore, this is a one way communication.
+  slonkboard is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  slonkboard is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+Implemnetation of the interface between the dashboard and the slonk server, via TCP.
 */
 
 const net = require('net');
