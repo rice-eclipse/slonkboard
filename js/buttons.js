@@ -1,106 +1,95 @@
 // Modules for config management.
-let config = require("electron").remote.require("./modules/config")
 
 // Module for network hook calls.
 const { ipcRenderer, remote } = require('electron');
+const interface = require("electron").remote.require("./modules/interface.js");
+const logger = require("electron").remote.require("./modules/runtime_logging.js");
 
 // Retrieving server connection buttons.
-const btnConnect = document.getElementById('serverConnect')
-const btnDisconnect = document.getElementById('serverDisconnect')
-
-// Retrieving reinit logs button.
-const btnToggleLogs = document.getElementById('toggleLogging')
+const btnConnect = document.getElementById('serverConnect');
+const btnDisconnect = document.getElementById('serverDisconnect');
+const ipInput = document.getElementById("ipInput");
+const portInput = document.getElementById("portInput");
 
 // Retrieving ignition buttons.
-const btnIgnition = document.getElementById('btnIgnition')
-const btnStopIgnition = document.getElementById('btnStopIgnition')
+const btnIgnition = document.getElementById('btnIgnition');
+const btnStopIgnition = document.getElementById('btnStopIgnition');
 
-// Iterval variable
-let interval;
-let currentTimer = config.config.test.starttime;
+/**
+ * The callback interval object, calling regularly on countdown.
+ * To stop countdown, this interval can be cleared.
+ */
+let interval = null;
+/**
+ * The current ignition timer. 
+ * Is null if there is no ignition process going on.
+ * Is negative before the ignition start, and positive after.
+ */
+let ignitionTimer = null;
 
 // BTN: Connect
-btnConnect.addEventListener('click', function (event) {
-  ipcRenderer.send('connectTCP', {
-    port: config.config.network.tcp.port,
-    ip: config.config.network.tcp.ip
-  });
+btnConnect.addEventListener('click', (_event) => {
+    ipcRenderer.send('connectTcp', {
+        port: portInput.value,
+        ip: ipInput.value
+    });
 });
 
 // BTN: Disconnect
-btnDisconnect.addEventListener('click', function (event) {
-  ipcRenderer.send('destroyTCP', {});
-});
-
-// BTN: Reinit Logs
-btnToggleLogs.addEventListener('click', function (event) {
-  ipcRenderer.send('toggleLogging', {});
+btnDisconnect.addEventListener('click', (_event) => {
+    ipcRenderer.send('destroyTcp', {});
 });
 
 // BTN: Ignition
-btnIgnition.addEventListener('click', function (event) {
-  if (!remote.getGlobal('sensor_logger').enabled) {
-    Swal.fire({
-      title: 'Logging is not enabled.',
-      text: 'You are about to ignite the engine, but the logging is currently not enabled. Do you still want to continue?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, ignite!',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        stageIgnition();
-      }
-    });
-  } else {
-    stageIgnition();
-  }
+btnIgnition.addEventListener('click', (_event) => {
+    startIgnitionCountdown();
 });
 
 // BTN: Anti-Ignition
 btnStopIgnition.addEventListener('click', function (event) {
-  unstageIgnition();
+    endIgnitionCountdown();
+    ipcRenderer.send('sendTcp', { "type": "EmergencyStop" });
+});
 
-  var buffer = Buffer.alloc(1);
-  buffer.fill(config.config.commands[config.config.maincontrols["anti-ignition"].action]);
+interface.emitter.on("status", (state) => {
+    btnIgnition.disabled = !state;
+    btnStopIgnition.disabled = !state;
+    btnDisconnect.disabled = !state;
+});
 
-  ipcRenderer.send('sendTCP', buffer);
-})
+/**
+ * Begin the ignition countdown process.
+ * Will be a no-op if the ignition countdown is currently happening.
+ */
+function startIgnitionCountdown() {
+    if (ignitionTimer == null) {
+        // do not double-ignite
 
-function startInterval() {
-  if (currentTimer != config.config.test.starttime) {
-    return false;
-  }
+        ignitionTimer = -10;
 
-  interval = setInterval(function () {
-    if (currentTimer < 0) {
-      livelog.log("", "", `<span style="color:yellow;">` + currentTimer + ` seconds until ignition.</span>`);
+        interval = setInterval(() => {
+            logger.log.warn("" + ignitionTimer + " seconds until ignition");
+
+            if (ignitionTimer == 0) {
+                // send ignition message to dashboard
+                logger.log.warn("Igniting.")
+                ipcRenderer.send('sendTcp', { "type": "Ignition" });
+                endIgnitionCountdown();
+            }
+            else {
+                ignitionTimer += 1;
+            }
+        }, 1000);
     }
-    if (currentTimer > 0) {
-      livelog.log("", "", `<span style="color:yellow;">` + currentTimer + ` seconds elapsed since ignition.</span>`);
-    }
-
-    if (currentTimer == 0) {
-      var buffer = Buffer.alloc(1);
-      buffer.fill(config.config.commands[config.config.maincontrols.ignition.action]);
-      ipcRenderer.send('sendTCP', buffer);
-    }
-
-    if (currentTimer >= config.config.test.finishtime) {
-      unstageIgnition();
-      return false;
-    }
-
-    currentTimer += 1;
-  }, 1000);
 }
 
-// Start countdown delay and send buffer
-function stageIgnition() {
-  startInterval();
-}
-
-function unstageIgnition() {
-  clearInterval(interval);
-  currentTimer = config.config.test.starttime;
+/**
+ * Stop the ignition countdown timer. 
+ * Will be a no-op if the ignition countdown is not currently happening.
+ */
+function endIgnitionCountdown() {
+    if (interval != null) {
+        clearInterval(interval);
+    }
+    ignitionTimer = null;
 }
