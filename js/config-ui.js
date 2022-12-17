@@ -127,10 +127,8 @@ function updateDriverBadges(message) {
             }
         } else {
             badge.className = "badge badge-secondary";
-            if (!interface.config.drivers[idx].protected) {
-                actuateButton.className = "btn btn-primary";
-                deactuateButton.className = "btn btn-secondary";
-            }
+            actuateButton.className = "btn btn-primary";
+            deactuateButton.className = "btn btn-secondary";
         }
     }
 }
