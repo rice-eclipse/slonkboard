@@ -46,4 +46,4 @@ ELECTRON_ENABLE_LOGGING=1 npm start
 Copyright (c) Rice Eclipse 2019-2022. 
 All rights reserved.
 
-Licensed under [GNU General Public License v3.0](https://github.com/rice-eclipse/slonkboard/blob/master/LICENSE).
+Licensed under [GNU General Public License v3.0](https://github.com/rice-eclipse/slonkboard/blob/master/LICENSE.md).
