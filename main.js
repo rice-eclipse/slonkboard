@@ -17,7 +17,7 @@
 */
 
 // Modules to control application life and create native browser window.
-const { app, ipcMain, dialog, BrowserWindow } = require('electron');
+const { app, ipcMain, powerSaveBlocker, BrowserWindow } = require('electron');
 
 // Module for runtime charting if 
 const logger = require("./modules/runtime_logging");
@@ -30,6 +30,8 @@ logger.log.info("Initializing slonkboard");
 // Initializing the window.
 let mainWindow
 global.mainWindow = mainWindow
+
+powerSaveBlocker.start("prevent-display-sleep")
 
 function createWindow() {
     global.mainWindow = new BrowserWindow({
