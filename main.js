@@ -35,6 +35,7 @@ powerSaveBlocker.start("prevent-display-sleep")
 
 function createWindow() {
     global.mainWindow = new BrowserWindow({
+        icon:"icon/icon128.png",
         autoHideMenuBar: true,
         width: 1200,
         height: 900,
