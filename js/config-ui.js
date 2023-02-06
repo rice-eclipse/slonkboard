@@ -65,8 +65,8 @@ function updatePanelButtons() {
         // unprotected drivers get manual actuation controls
 
         // Add actuate and deactuate buttons
-        let actButton = make_driver_button("Actuate", i, true);
-        let deactButton = make_driver_button("Deactuate", i, false);
+        let actButton = make_driver_button(driver.label_actuate, i, true);
+        let deactButton = make_driver_button(driver.label_deactuate, i, false);
         if (driver.protected) {
             actButton.disabled = true;
             deactButton.disabled = true;

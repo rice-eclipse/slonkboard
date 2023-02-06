@@ -19,7 +19,7 @@
 // Modules for config management.
 
 // Module for network hook calls.
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer } = require('electron');
 const interface = require("electron").remote.require("./modules/interface.js");
 const logger = require("electron").remote.require("./modules/runtime_logging.js");
 
