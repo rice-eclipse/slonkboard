@@ -194,7 +194,7 @@ function updateSensorList() {
             let adcCell = row.insertCell(1);
             let calibCell = row.insertCell(2);
 
-            labelCell.innerHTML = sensor.label;
+            labelCell.innerHTML = `${sensor.adc}-${sensor.channel}: ${sensor.label}`;
             adcCell.innerHTML = "N/A"; // no readings, so this text should be N/A for now
             adcCell.id = "sensor-adc-" + sensor.label;
             adcCell.classList.add("text-right"); // right align ADC value
