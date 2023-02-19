@@ -65,8 +65,8 @@ function updatePanelButtons() {
         // unprotected drivers get manual actuation controls
 
         // Add actuate and deactuate buttons
-        let actButton = make_driver_button("Actuate", i, true);
-        let deactButton = make_driver_button("Deactuate", i, false);
+        let actButton = make_driver_button(driver.label_actuate, i, true);
+        let deactButton = make_driver_button(driver.label_deactuate, i, false);
         if (driver.protected) {
             actButton.disabled = true;
             deactButton.disabled = true;
@@ -194,7 +194,7 @@ function updateSensorList() {
             let adcCell = row.insertCell(1);
             let calibCell = row.insertCell(2);
 
-            labelCell.innerHTML = sensor.label;
+            labelCell.innerHTML = `${sensor.adc}-${sensor.channel}: ${sensor.label}`;
             adcCell.innerHTML = "N/A"; // no readings, so this text should be N/A for now
             adcCell.id = "sensor-adc-" + sensor.label;
             adcCell.classList.add("text-right"); // right align ADC value
