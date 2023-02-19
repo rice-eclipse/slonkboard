@@ -78,6 +78,12 @@ function updatePanelButtons() {
         panelButtons.appendChild(group);
 
     }
+
+    if (interface.config.party_mode) {
+        document.body.style.background = "#edabed";
+    } else {
+        document.body.style.background = "#ffffff";
+    }
 }
 
 /**
