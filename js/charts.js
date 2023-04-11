@@ -117,8 +117,7 @@ function updateSensorValue(message) {
             for (datum of message.readings) {
                 let sensor_cfg = group_cfg.sensors[datum.sensor_id];
                 let calibrated_value = sensor_cfg.calibration_slope * datum.reading + sensor_cfg.calibration_intercept;
-                let read_time = moment("" + datum.time.secs_since_epoch + "." + datum.time.nanos_since_epoch / 1000000, "X")
-                charts[i].data.datasets[datum.sensor_id].data.push({ x: read_time, y: calibrated_value });
+                charts[i].data.datasets[datum.sensor_id].data.push({ x: Date.now(), y: calibrated_value });
             }
             charts[i].update({ preservation: true });
         }
