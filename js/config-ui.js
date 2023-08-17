@@ -21,7 +21,8 @@
 
 // Module for network hook calls.
 const { ipcRenderer } = require('electron');
-const interface = require("electron").remote.require("./modules/interface.js");
+const remote = require('@electron/remote')
+const interface = remote.require("./modules/interface.js");
 
 /**
  * Update the control panel buttons based on the current configuration.

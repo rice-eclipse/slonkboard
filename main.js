@@ -18,7 +18,7 @@
 
 // Modules to control application life and create native browser window.
 const { app, ipcMain, powerSaveBlocker, BrowserWindow } = require('electron');
-
+require('@electron/remote/main').initialize()
 // Module for runtime charting if 
 const logger = require("./modules/runtime_logging");
 const sensor_logger = require("./modules/sensor_logging");
@@ -41,9 +41,11 @@ function createWindow() {
         minWidth: 1200,
         minHeight: 900,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         }
     });
+    require("@electron/remote/main").enable(global.mainWindow.webContents);
     global.mainWindow.webContents.openDevTools();
     global.mainWindow.loadFile('application.html');
 

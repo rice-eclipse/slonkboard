@@ -18,7 +18,8 @@
 
 // Module for network hook calls.
 const { ipcRenderer } = require('electron');
-const interface = require("electron").remote.require("./modules/interface");
+const remote = require('@electron/remote')
+const interface = remote.require("./modules/interface");
 
 // Initializing all the variables.
 let chartElems = [];
