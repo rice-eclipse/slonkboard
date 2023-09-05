@@ -42,7 +42,8 @@ function createWindow() {
         minHeight: 900,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            enableRemoteModule: true
         }
     });
     require("@electron/remote/main").enable(global.mainWindow.webContents);

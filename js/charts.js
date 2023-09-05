@@ -49,18 +49,18 @@ for (var i = 0; i < 4; i++) {
                 }
             },
             scales: {
-                xAxes: [{
+                x: {
                     type: 'realtime'
-                }],
-                yAxes: [{
+                },
+                y: {
                     ticks: {
                         beginAtZero: true
                     },
-                    scaleLabel: {
-                        display: true,
-                        labelString: "N/A"
-                    }
-                }]
+                },
+                title: {
+                    display: true,
+                    text: "N/A"
+                }
             },
             animation: {
                 duration: 0
@@ -99,7 +99,7 @@ function applySensorGroup(chartid, groupId) {
             source_label: sensor.label,
         })
 
-        chart.options.scales.yAxes[0].scaleLabel.labelString = sensor.units;
+        chart.options.scales.title.text = sensor.units;
     }
     chart.update({
         preservation: true
