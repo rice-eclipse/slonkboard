@@ -47,7 +47,7 @@ function createWindow() {
         }
     });
     require("@electron/remote/main").enable(global.mainWindow.webContents);
-    global.mainWindow.webContents.openDevTools();
+    // global.mainWindow.webContents.openDevTools();
     global.mainWindow.loadFile('application.html');
 
     //global.mainWindow.webContents.openDevTools()
