@@ -71,7 +71,8 @@ for (var i = 0; i < 4; i++) {
             responsiveAnimationDuration: 0,
             plugins: {
                 streaming: {
-                    frameRate: 15
+                    frameRate: 15,
+                    duration: 30000
                 }
             }
         }
