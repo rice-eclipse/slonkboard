@@ -72,7 +72,7 @@ for (var i = 0; i < 4; i++) {
             plugins: {
                 streaming: {
                     frameRate: 15,
-                    duration: 30000
+                    duration: 60000
                 }
             }
         }
