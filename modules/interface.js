@@ -86,9 +86,9 @@ module.exports = {
 		tcpClient.connect(port, ip);
 		
 		// Server expects to immediately receive the time in s since Unix Epoch
-		const d = new Date;
-		let date = d.getTime();
-		tcpClient.write(date.toString());
+		// const d = new Date;
+		// let date = d.getTime();
+		// tcpClient.write(date.toString());
 	},
 	/**
 	 * Send a command to the `slonk` controller.
