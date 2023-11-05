@@ -25,6 +25,8 @@ const sensor_logger = require("./modules/sensor_logging");
 const interface = require("./modules/interface")
 global.sensor_logger = sensor_logger;
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
+
 logger.log.info("Initializing slonkboard");
 
 // Initializing the window.
