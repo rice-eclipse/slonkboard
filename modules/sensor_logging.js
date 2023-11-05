@@ -50,7 +50,8 @@ interface.emitter.on("config", (_cfg) => {
             let groupStream = [];
             for (idx in groupCfg.sensors) {
                 let sensor = groupCfg.sensors[idx];
-                let fname = "logs/sensor/" + directory + "/" + sensor.label + ".log"
+                let corrected_label = sensor.label.replace(/:/g, ''); // Remove semicolons
+                let fname = "logs/sensor/" + directory + "/" + corrected_label + ".log"
 
                 groupStream.push(fs.createWriteStream(fname, { flags: 'a' }))
                 logger.log.info("Created log file " + fname);

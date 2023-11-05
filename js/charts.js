@@ -18,7 +18,8 @@
 
 // Module for network hook calls.
 const { ipcRenderer } = require('electron');
-const interface = require("electron").remote.require("./modules/interface");
+const remote = require('@electron/remote')
+const interface = remote.require("./modules/interface");
 
 // Initializing all the variables.
 let chartElems = [];
@@ -48,18 +49,18 @@ for (var i = 0; i < 4; i++) {
                 }
             },
             scales: {
-                xAxes: [{
+                x: {
                     type: 'realtime'
-                }],
-                yAxes: [{
+                },
+                y: {
                     ticks: {
                         beginAtZero: true
                     },
-                    scaleLabel: {
-                        display: true,
-                        labelString: "N/A"
-                    }
-                }]
+                },
+                title: {
+                    display: true,
+                    text: "N/A"
+                }
             },
             animation: {
                 duration: 0
@@ -70,7 +71,8 @@ for (var i = 0; i < 4; i++) {
             responsiveAnimationDuration: 0,
             plugins: {
                 streaming: {
-                    frameRate: 15
+                    frameRate: 15,
+                    duration: 60000
                 }
             }
         }
@@ -98,7 +100,7 @@ function applySensorGroup(chartid, groupId) {
             source_label: sensor.label,
         })
 
-        chart.options.scales.yAxes[0].scaleLabel.labelString = sensor.units;
+        chart.options.scales.title.text = sensor.units;
     }
     chart.update({
         preservation: true

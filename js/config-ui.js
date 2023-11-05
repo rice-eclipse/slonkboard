@@ -21,7 +21,8 @@
 
 // Module for network hook calls.
 const { ipcRenderer } = require('electron');
-const interface = require("electron").remote.require("./modules/interface.js");
+const remote = require('@electron/remote')
+const interface = remote.require("./modules/interface.js");
 
 /**
  * Update the control panel buttons based on the current configuration.
@@ -65,8 +66,8 @@ function updatePanelButtons() {
         // unprotected drivers get manual actuation controls
 
         // Add actuate and deactuate buttons
-        let actButton = make_driver_button("Actuate", i, true);
-        let deactButton = make_driver_button("Deactuate", i, false);
+        let actButton = make_driver_button(driver.label_actuate, i, true);
+        let deactButton = make_driver_button(driver.label_deactuate, i, false);
         if (driver.protected) {
             actButton.disabled = true;
             deactButton.disabled = true;

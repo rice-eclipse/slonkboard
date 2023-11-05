@@ -19,9 +19,10 @@
 // Modules for config management.
 
 // Module for network hook calls.
-const { ipcRenderer, remote } = require('electron');
-const interface = require("electron").remote.require("./modules/interface.js");
-const logger = require("electron").remote.require("./modules/runtime_logging.js");
+const { ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
+const interface = remote.require("./modules/interface.js");
+const logger = remote.require("./modules/runtime_logging.js");
 
 // Retrieving server connection buttons.
 const btnConnect = document.getElementById('serverConnect');
