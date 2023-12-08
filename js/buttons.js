@@ -46,28 +46,39 @@ let interval = null;
  */
 let ignitionTimer = null;
 
+let keyPressed = {};
+window.onkeyup = function(e) { keyPressed[e.keyCode] = false; }
+window.onkeydown = function(e) { keyPressed[e.keyCode] = true; }
+function inControlMode() { return keyPressed['16']; }
+function inArmedMode() { return (keyPressed['16'] && keyPressed['54']); }
+
 // BTN: Connect
 btnConnect.addEventListener('click', (_event) => {
-    ipcRenderer.send('connectTcp', {
-        port: portInput.value,
-        ip: ipInput.value
-    });
+    if (inControlMode())
+        ipcRenderer.send('connectTcp', {
+            port: portInput.value,
+            ip: ipInput.value
+        });
 });
 
 // BTN: Disconnect
 btnDisconnect.addEventListener('click', (_event) => {
-    ipcRenderer.send('destroyTcp', {});
+    if (inControlMode())
+        ipcRenderer.send('destroyTcp', {});
 });
 
 // BTN: Ignition
 btnIgnition.addEventListener('click', (_event) => {
-    startIgnitionCountdown();
+    if (inArmedMode())
+        startIgnitionCountdown();
 });
 
 // BTN: Anti-Ignition
 btnStopIgnition.addEventListener('click', function (event) {
-    endIgnitionCountdown();
-    ipcRenderer.send('sendTcp', { "type": "EmergencyStop" });
+    if (inControlMode()) {
+        endIgnitionCountdown();
+        ipcRenderer.send('sendTcp', { "type": "EmergencyStop" });
+    }
 });
 
 interface.emitter.on("status", (state) => {

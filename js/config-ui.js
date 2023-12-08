@@ -24,6 +24,12 @@ const { ipcRenderer } = require('electron');
 const remote = require('@electron/remote')
 const interface = remote.require("./modules/interface.js");
 
+var keyPressed = {};
+window.onkeyup = function(e) { keyPressed[e.keyCode] = false; }
+window.onkeydown = function(e) { keyPressed[e.keyCode] = true; }
+function inControlMode() { return keyPressed['16']; }
+function inArmedMode() { return keyPressed['16'] && keyPressed['54']; }
+
 /**
  * Update the control panel buttons based on the current configuration.
  * 
@@ -101,11 +107,13 @@ function make_driver_button(label, id, direction) {
     }
     button.innerHTML = label;
     button.onclick = (_) => {
-        interface.sendTcp({
-            "type": "Actuate",
-            "driver_id": id,
-            "value": direction,
-        });
+        if (inControlMode()) {
+            interface.sendTcp({
+                "type": "Actuate",
+                "driver_id": id,
+                "value": direction,
+            });
+        }
     };
 
     return button;
