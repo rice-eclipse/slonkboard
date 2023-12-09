@@ -151,6 +151,26 @@ function try_extract_json(buf) {
 	return null;
 }
 
+function processMessage(message) {
+	switch (message.type) {
+		case "Config":
+			logger.log.info("Received new configuration from dashboard.");
+			module.exports.config = message.config;
+			module.exports.emitter.emit("config", message.config);
+			break;
+		case "SensorValue":
+			// don't log that we received a sensor value since we get a lot of them.
+			module.exports.emitter.emit("sensorValue", message);
+			break;
+		case "DriverValue":
+			// don't log that we received a driver value since we get a lot of them.
+			module.exports.emitter.emit("driverValue", message);
+			break;
+		default:
+			logger.log.error("Unrecognized message type " + JSON.stringify(message));
+			break;
+	}
+}
 
 tcpClient.on('data', function (text) {
 	// We just received some data from the controller.
@@ -160,24 +180,14 @@ tcpClient.on('data', function (text) {
 	json_str = try_extract_json(msg_buf);
 	if (json_str != null) {
 		msg_buf = msg_buf.slice(json_str.length);
-		message = JSON.parse(json_str);
-		switch (message.type) {
-			case "Config":
-				logger.log.info("Received new configuration from dashboard.");
-				module.exports.config = message.config;
-				module.exports.emitter.emit("config", message.config);
-				break;
-			case "SensorValue":
-				// don't log that we received a sensor value since we get a lot of them.
-				module.exports.emitter.emit("sensorValue", message);
-				break;
-			case "DriverValue":
-				// don't log that we received a driver value since we get a lot of them.
-				module.exports.emitter.emit("driverValue", message);
-				break;
-			default:
-				logger.log.error("Unrecognized message type " + message.type);
-				break;
+		message_list = JSON.parse(json_str);
+		if (message_list.tcs) {
+			processMessage(message_list.tcs);
+			processMessage(message_list.lcs);
+			processMessage(message_list.pts);
+			processMessage(message_list.driver);
+		} else {
+			processMessage(message_list);
 		}
 	}
 });
