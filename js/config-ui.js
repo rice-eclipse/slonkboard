@@ -217,10 +217,18 @@ function updateSensorListValues(message) {
         let sensorCfg = groupCfg.sensors[datum.sensor_id];
         let calibValue = sensorCfg.calibration_slope * datum.reading + sensorCfg.calibration_intercept;
 
+        let impossible_temperature = sensorCfg.units == '°C' && calibValue < -273.15;
+        let impossible_pressure = sensorCfg.units == 'psi' && calibValue < -200;
+        let possible_value = !impossible_temperature && !impossible_pressure;
+
         let adcCell = document.getElementById("sensor-adc-" + sensorCfg.label);
         adcCell.innerHTML = datum.reading;
         let calibCell = document.getElementById("sensor-calib-" + sensorCfg.label);
-        calibCell.innerHTML = Math.round(calibValue) + " " + sensorCfg.units;
+        if (possible_value) {
+            calibCell.innerHTML = Math.round(calibValue) + " " + sensorCfg.units;
+        } else {
+            calibCell.innerHTML = 'LoS';
+        }
     }
 }
 
