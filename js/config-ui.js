@@ -217,7 +217,7 @@ function updateSensorListValues(message) {
         let sensorCfg = groupCfg.sensors[datum.sensor_id];
         let calibValue = sensorCfg.calibration_slope * datum.reading + sensorCfg.calibration_intercept;
 
-        let impossible_temperature = sensorCfg.units == '°C' && calibValue < -273.15;
+        let impossible_temperature = sensorCfg.units == '°F' && calibValue < -200;
         let impossible_pressure = sensorCfg.units == 'psi' && calibValue < -200;
         let possible_value = !impossible_temperature && !impossible_pressure;
 

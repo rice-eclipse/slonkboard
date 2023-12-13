@@ -120,7 +120,7 @@ function updateSensorValue(message) {
                 let sensor_cfg = group_cfg.sensors[datum.sensor_id];
                 let calibrated_value = sensor_cfg.calibration_slope * datum.reading + sensor_cfg.calibration_intercept;
 
-                let impossible_temperature = sensor_cfg.units == '°C' && calibrated_value < -273.15;
+                let impossible_temperature = sensor_cfg.units == '°F' && calibrated_value < -200;
                 let impossible_pressure = sensor_cfg.units == 'psi' && calibrated_value < -200;
                 let possible_value = !impossible_temperature && !impossible_pressure;
 
