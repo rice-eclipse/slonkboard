@@ -72,6 +72,10 @@ interface.emitter.on("sensorValue", (message) => {
     let groupCfg = interface.config.sensor_groups[message.group_id];
     let groupStream = groupStreams[message.group_id];
     for (datum of message.readings) {
+        if (typeof groupStream == 'undefined' || typeof datum.sensor_id == 'undefined' || 
+            !(datum.sensor_id in groupStream)) {
+            break;
+        }
         let sensorCfg = groupCfg.sensors[datum.sensor_id];
         let calibValue = sensorCfg.calibration_slope * datum.reading + sensorCfg.calibration_intercept;
         let read_time = moment("" + datum.time.secs_since_epoch + "." + datum.time.nanos_since_epoch / 1000000, "X")
