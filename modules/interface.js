@@ -23,7 +23,7 @@ Implemnetation of the interface between the dashboard and the slonk server, via 
 const net = require('net');
 const EventEmitter = require('events');
 const logger = require("./runtime_logging");
-
+const fs = require("fs");
 const tcpClient = new net.Socket();
 
 /**
@@ -175,12 +175,13 @@ function processMessage(message) {
 tcpClient.on('data', function (text) {
 	// We just received some data from the controller.
 	// Send that information down the correct pipeline using the emitter.
-
 	msg_buf += text;
 	json_str = try_extract_json(msg_buf);
 	if (json_str != null) {
 		msg_buf = msg_buf.slice(json_str.length);
 		message_list = JSON.parse(json_str);
+		logger.log.info(JSON.stringify(message_list, null, 4));
+		fs.writeFileSync("data.json", JSON.stringify(message_list, null, 4));
 		if (message_list.tcs) {
 			processMessage(message_list.tcs);
 			processMessage(message_list.lcs);

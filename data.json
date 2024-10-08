@@ -1,0 +1,84 @@
+{
+    "tcs": {
+        "type": "SensorValue",
+        "group_id": 0,
+        "readings": [
+            {
+                "sensor_id": 0,
+                "reading": -720.79701,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            },
+            {
+                "sensor_id": 1,
+                "reading": -873.29221,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            }
+        ]
+    },
+    "pts": {
+        "type": "SensorValue",
+        "group_id": 1,
+        "readings": [
+            {
+                "sensor_id": 0,
+                "reading": -233.66851,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            },
+            {
+                "sensor_id": 1,
+                "reading": -242.79768,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            },
+            {
+                "sensor_id": 2,
+                "reading": -257.91977,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            },
+            {
+                "sensor_id": 3,
+                "reading": -237.00484,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            }
+        ]
+    },
+    "lcs": {
+        "type": "SensorValue",
+        "group_id": 2,
+        "readings": [
+            {
+                "sensor_id": 0,
+                "reading": -22.73858,
+                "time": {
+                    "secs_since_epoch": 1728354784,
+                    "nanos_since_epoch": 0
+                }
+            }
+        ]
+    },
+    "driver": {
+        "type": "DriverValue",
+        "values": [
+            false,
+            false,
+            false
+        ]
+    }
+}
